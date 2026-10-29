@@ -1,7 +1,7 @@
 import React from 'react';
-import { RefreshCw, Database, Sparkles, Clock } from 'lucide-react';
+import { RefreshCw, Sparkles, Clock, LogOut, User } from 'lucide-react';
 
-export default function Header({ health, onRefresh, loading }) {
+export default function Header({ health, onRefresh, loading, user, onLogout }) {
   const currentTime = new Date().toLocaleDateString('en-US', {
     weekday: 'short',
     month: 'short',
@@ -10,7 +10,7 @@ export default function Header({ health, onRefresh, loading }) {
   });
 
   return (
-    <header className="h-16 bg-white border-b border-slate-200 px-8 flex items-center justify-between sticky top-0 z-10">
+    <header className="h-16 bg-white border-b border-slate-200 px-6 sm:px-8 flex items-center justify-between sticky top-0 z-10">
       <div className="flex items-center space-x-4">
         <h2 className="text-lg font-bold text-slate-800 tracking-tight">
           Operational Intelligence Dashboard
@@ -21,8 +21,8 @@ export default function Header({ health, onRefresh, loading }) {
         </span>
       </div>
 
-      <div className="flex items-center space-x-4">
-        <div className="hidden md:flex items-center space-x-2 text-xs text-slate-500 font-medium bg-slate-50 px-3 py-1.5 rounded-lg border border-slate-200">
+      <div className="flex items-center space-x-3 sm:space-x-4">
+        <div className="hidden lg:flex items-center space-x-2 text-xs text-slate-500 font-medium bg-slate-50 px-3 py-1.5 rounded-lg border border-slate-200">
           <Clock className="w-3.5 h-3.5 text-slate-400" />
           <span>{currentTime}</span>
         </div>
@@ -34,8 +34,31 @@ export default function Header({ health, onRefresh, loading }) {
           title="Refresh Backend Data & State"
         >
           <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin text-emerald-600' : 'text-slate-500'}`} />
-          <span>{loading ? 'Refreshing...' : 'Refresh'}</span>
+          <span className="hidden sm:inline">{loading ? 'Refreshing...' : 'Refresh'}</span>
         </button>
+
+        {/* User Profile & Logout */}
+        {user && (
+          <div className="flex items-center space-x-2 pl-2 border-l border-slate-200">
+            <div className="flex items-center space-x-2 bg-slate-50 border border-slate-200 px-2.5 py-1 rounded-xl">
+              <div className="w-6 h-6 rounded-lg bg-emerald-600 text-white flex items-center justify-center font-bold text-xs">
+                {user.email ? user.email.charAt(0).toUpperCase() : 'U'}
+              </div>
+              <div className="hidden md:block text-left text-xs leading-tight">
+                <div className="font-semibold text-slate-800 truncate max-w-[140px]">{user.email}</div>
+                <div className="text-[10px] text-emerald-700 font-medium">{user.role || 'Staff'}</div>
+              </div>
+            </div>
+
+            <button
+              onClick={onLogout}
+              className="p-1.5 rounded-lg text-slate-500 hover:text-red-600 hover:bg-red-50 border border-transparent hover:border-red-100 transition-all"
+              title="Sign Out"
+            >
+              <LogOut className="w-4 h-4" />
+            </button>
+          </div>
+        )}
       </div>
     </header>
   );

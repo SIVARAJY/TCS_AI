@@ -8,9 +8,19 @@ import CounterOptimization from './pages/CounterOptimization';
 import PeakHourPlan from './pages/PeakHourPlan';
 import ModelPerformance from './pages/ModelPerformance';
 import Reports from './pages/Reports';
+import Login from './pages/Login';
 import { api } from './services/api';
 
 export default function App() {
+  const [user, setUser] = useState(() => {
+    try {
+      const saved = localStorage.getItem('canteen_user') || sessionStorage.getItem('canteen_user');
+      return saved ? JSON.parse(saved) : null;
+    } catch {
+      return null;
+    }
+  });
+
   const [activeTab, setActiveTab] = useState('dashboard');
   const [health, setHealth] = useState(null);
   const [summary, setSummary] = useState(null);
@@ -18,8 +28,10 @@ export default function App() {
   const [errorMsg, setErrorMsg] = useState(null);
 
   useEffect(() => {
-    fetchInitialData();
-  }, []);
+    if (user) {
+      fetchInitialData();
+    }
+  }, [user]);
 
   const fetchInitialData = async () => {
     setLoading(true);
@@ -33,11 +45,22 @@ export default function App() {
       setSummary(sRes);
     } catch (err) {
       console.error('Initialization error:', err);
-      setErrorMsg(err.message || 'Could not connect to FastAPI backend on port 8000');
+      setErrorMsg(err.message || 'Could not connect to FastAPI backend');
     } finally {
       setLoading(false);
     }
   };
+
+  const handleLogout = () => {
+    localStorage.removeItem('canteen_user');
+    sessionStorage.removeItem('canteen_user');
+    setUser(null);
+  };
+
+  // If user is not logged in, show the Login Page
+  if (!user) {
+    return <Login onLogin={(userData) => setUser(userData)} />;
+  }
 
   const renderContent = () => {
     switch (activeTab) {
@@ -67,14 +90,20 @@ export default function App() {
 
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col h-full overflow-hidden">
-        <Header health={health} onRefresh={fetchInitialData} loading={loading} />
+        <Header
+          health={health}
+          onRefresh={fetchInitialData}
+          loading={loading}
+          user={user}
+          onLogout={handleLogout}
+        />
 
         <main className="flex-1 overflow-y-auto p-6 sm:p-8">
           {errorMsg && (
             <div className="mb-6 p-4 rounded-xl bg-amber-50 border border-amber-200 text-amber-900 text-xs flex items-center justify-between">
               <div>
                 <strong>Backend Connection Notice:</strong> {errorMsg}.
-                Please ensure the FastAPI backend is running on <code>http://localhost:8000</code>.
+                Please ensure the FastAPI backend is running.
               </div>
               <button
                 onClick={fetchInitialData}
