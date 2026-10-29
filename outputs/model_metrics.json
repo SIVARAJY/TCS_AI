@@ -1,0 +1,32 @@
+{
+  "model_name": "RandomForestRegressor",
+  "baseline_name": "DummyRegressor (Historical Mean)",
+  "train_records": 16000,
+  "test_records": 4000,
+  "split_type": "Chronological (First 80% train dates, Last 20% test dates)",
+  "train_date_range": {
+    "start": "2023-07-03",
+    "end": "2025-01-10"
+  },
+  "test_date_range": {
+    "start": "2025-01-13",
+    "end": "2025-05-30"
+  },
+  "baseline_metrics": {
+    "mae": 19.025,
+    "rmse": 23.983,
+    "r2": -0.001
+  },
+  "model_metrics": {
+    "mae": 7.599,
+    "rmse": 10.987,
+    "r2": 0.79
+  },
+  "gradient_boosting_metrics": {
+    "mae": 7.484,
+    "rmse": 10.827,
+    "r2": 0.796
+  },
+  "feature_count": 13,
+  "explanation": "Because canteen demand forecasting is a continuous quantity regression task, standard classification accuracy percentages are not mathematically meaningful. Instead, model performance is evaluated using Mean Absolute Error (MAE), Root Mean Squared Error (RMSE), and the Coefficient of Determination (R\u00b2). The trained RandomForestRegressor achieves an R\u00b2 of 0.79 and an MAE of 7.599 orders per slot, vastly outperforming the naive baseline (R\u00b2=-0.001, MAE=19.025 orders)."
+}

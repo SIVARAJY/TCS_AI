@@ -1,0 +1,27 @@
+services:
+  # 1. FastAPI Backend Service
+  - type: web
+    name: canteen-ai-backend
+    env: python
+    plan: free
+    buildCommand: pip install -r backend/requirements.txt
+    startCommand: python run.py
+    healthCheckPath: /api/health
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.9
+
+  # 2. React Vite Frontend (Static Site)
+  - type: static
+    name: canteen-ai-frontend
+    plan: free
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    envVars:
+      - key: VITE_API_BASE_URL
+        value: https://canteen-ai-backend.onrender.com

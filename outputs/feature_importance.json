@@ -1,0 +1,70 @@
+{
+  "model_name": "RandomForestRegressor",
+  "features": [
+    {
+      "feature": "lag_1_slot",
+      "importance": 0.4253,
+      "description": "Immediately preceding 15-minute slot demand"
+    },
+    {
+      "feature": "class_break_num",
+      "importance": 0.2729,
+      "description": "Active class break surge indicator"
+    },
+    {
+      "feature": "slot_index",
+      "importance": 0.0995,
+      "description": "Sequential index of 15-minute slot (0-39)"
+    },
+    {
+      "feature": "is_lunch_peak",
+      "importance": 0.0493,
+      "description": "Core canteen lunch rush period (12:15-13:45)"
+    },
+    {
+      "feature": "lag_2_slots",
+      "importance": 0.0317,
+      "description": "Demand two slots prior (30-minute lag)"
+    },
+    {
+      "feature": "lag_prev_day",
+      "importance": 0.0313,
+      "description": "Demand at the exact same slot on previous day"
+    },
+    {
+      "feature": "minute",
+      "importance": 0.0208,
+      "description": "Quarter hour within slot (0, 15, 30, 45)"
+    },
+    {
+      "feature": "day_of_week",
+      "importance": 0.0201,
+      "description": "Day of the week (0=Mon to 4=Fri)"
+    },
+    {
+      "feature": "month",
+      "importance": 0.0167,
+      "description": "Calendar month (1-12)"
+    },
+    {
+      "feature": "hour",
+      "importance": 0.013,
+      "description": "Time of day (Hour 8-17)"
+    },
+    {
+      "feature": "is_afternoon_break",
+      "importance": 0.01,
+      "description": "Afternoon snack break (15:15-15:45)"
+    },
+    {
+      "feature": "campus_event_num",
+      "importance": 0.0057,
+      "description": "Campus special event footfall indicator"
+    },
+    {
+      "feature": "is_morning_break",
+      "importance": 0.0035,
+      "description": "Morning snack & coffee break (10:15-11:15)"
+    }
+  ]
+}
